@@ -1,0 +1,25 @@
+# Ignore node modules and vendor dependencies
+node_modules
+vendor
+
+# Ignore log files
+storage/logs
+*.log
+
+# Ignore cached and build files
+bootstrap/cache
+storage/framework/cache
+storage/framework/sessions
+storage/framework/views
+storage/debugbar
+.phpunit.result.cache
+
+# Ignore IDE and system files
+.idea
+.vscode
+.DS_Store
+Thumbs.db
+
+# Ignore Docker-related files that should not be copied into the container
+docker/db_data
+docker-compose.override.yml
