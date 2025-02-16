@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateFundRequest;
 use App\Http\Requests\FundFilterRequest;
 use App\Http\Requests\UpdateFundRequest;
 use App\Services\FundService;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Throwable;
 
 class FundController extends Controller
 {
@@ -25,7 +26,8 @@ class FundController extends Controller
             );
 
             return response()->json(['data' => $funds], 200);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
+            Log::error("Fund list failed", ['exception' => $e->getMessage()]);
             return response()->json(['error' => 'An error occurred while retrieving funds'], 500);
         }
     }
@@ -45,9 +47,28 @@ class FundController extends Controller
             return response()->json(['message' => 'Fund updated successfully', 'data' => $updatedFund], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
+        } catch (Throwable $e) {
+            Log::error("Fund update failed", ['exception' => $e->getMessage()]);
             return response()->json(['error' => 'An error occurred while updating the fund'], 500);
+        }
+    }
+
+    public function store(CreateFundRequest $request): JsonResponse
+    {
+        try {
+            $validatedData = $request->validated();
+
+            $fund = $this->fundService->create(
+                name: data_get($validatedData, 'name'),
+                startYear: data_get($validatedData, 'start_year'),
+                fundManagerId: data_get($validatedData, 'fund_manager_id'),
+                aliases: data_get($validatedData, 'aliases'),
+            );
+
+            return response()->json(['message' => 'Fund created successfully', 'data' => $fund], 201);
+        } catch (Throwable $e) {
+            Log::error("Fund creation failed", ['exception' => $e->getMessage()]);
+            return response()->json(['error' => 'An error occurred while creating the fund'], 500);
         }
     }
 }

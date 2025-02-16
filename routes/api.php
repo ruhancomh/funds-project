@@ -26,3 +26,4 @@ Route::get('/fund-managers', [FundManagerController::class, 'index']);
 
 Route::get('/funds', [FundController::class, 'index']);
 Route::put('/funds/{id}', [FundController::class, 'update']);
+Route::post('/funds', [FundController::class, 'store']);

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\FundCreated;
 use App\Models\Fund;
 use App\Repositories\FundRepository;
 use Illuminate\Database\Eloquent\Collection;
@@ -25,5 +26,18 @@ class FundService
         }
 
         return $this->fundRepository->update($fund, $name, $startYear, $fundManagerId);
+    }
+
+    public function create(string $name, int $startYear, int $fundManagerId, ?array $aliases = []): Fund
+    {
+        $fund = $this->fundRepository->createFund($name, $startYear, $fundManagerId, $aliases);
+
+        event(new FundCreated($fund));
+
+        return $fund;
+    }
+
+    public function getDuplicated(Fund $fund): ?Fund {
+        return $this->fundRepository->getDuplicated($fund);
     }
 }
