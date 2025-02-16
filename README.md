@@ -26,7 +26,7 @@ To run this project, you need:
 
 ```sh
 git clone https://github.com/ruhancomh/funds-project.git
-cd laravel-fund-management
+cd funds-project
 ```
 
 ### 2️⃣ **Start the Docker Containers**
@@ -44,7 +44,7 @@ docker exec -it laravel_app composer install
 ### 4️⃣ **Run Migrations & Seed Database**
 
 ```sh
-docker exec -it laravel_app php artisan migrate --seed
+docker exec -it laravel_app php artisan migrate:fresh --seed
 ```
 
 ### 4️⃣ **Update Storage Permissions (ONLY FOR DEV ENV)**
@@ -137,7 +137,7 @@ Updates fund details including its manager.
 #### ✅ **Full cURL Request**
 
 ```sh
-curl -X PUT "http://localhost:8080/api/funds/10"      -H "Content-Type: application/json"      -d '{
+curl -X PUT "http://localhost:8080/api/funds/5"      -H "Content-Type: application/json"      -d '{
           "name": "Updated Tech Fund",
           "start_year": 2025,
           "fund_manager_id": 2
@@ -150,7 +150,7 @@ curl -X PUT "http://localhost:8080/api/funds/10"      -H "Content-Type: applicat
 {
     "message": "Fund updated successfully",
     "data": {
-        "id": 10,
+        "id": 5,
         "name": "Updated Tech Fund",
         "start_year": 2025,
         "fund_manager": {
