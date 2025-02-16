@@ -23,4 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/companies', [CompanyController::class, 'index']);
 Route::get('/fund-managers', [FundManagerController::class, 'index']);
+
 Route::get('/funds', [FundController::class, 'index']);
+Route::put('/funds/{id}', [FundController::class, 'update']);
