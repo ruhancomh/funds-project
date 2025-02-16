@@ -34,7 +34,7 @@ class FundTest extends TestCase
                 'data' => ['id', 'name', 'start_year', 'fund_manager']
             ])
             ->assertJsonFragment(['name' => 'Tech Growth Fund'])
-            ->assertJsonFragment(['start_year' => 2024])
+            ->assertJsonFragment(['start_year' => '2024'])
             ->assertJsonFragment(['fund_manager_id' => $fundManager->id]);
     }
 
@@ -55,7 +55,7 @@ class FundTest extends TestCase
         // Assert
         $response->assertStatus(201)
             ->assertJsonFragment(['name' => 'AI Investment Fund'])
-            ->assertJsonFragment(['start_year' => 2025])
+            ->assertJsonFragment(['start_year' => '2025'])
             ->assertJsonFragment(['fund_manager_id' => $fundManager->id])
             ->assertJsonFragment(['alias' => 'AI Growth'])
             ->assertJsonFragment(['alias' => 'Future AI Fund']);
@@ -82,7 +82,7 @@ class FundTest extends TestCase
         // Act
         $response = $this->putJson("/api/funds/{$fund->id}", [
             'name' => 'Updated Fund Name',
-            'start_year' => 2023,
+            'start_year' => '2023',
             'fund_manager_id' => $fundManager->id
         ]);
 
@@ -100,7 +100,7 @@ class FundTest extends TestCase
         // Act
         $response = $this->putJson('/api/funds/9999', [
             'name' => 'Non-existent Fund',
-            'start_year' => 2025,
+            'start_year' => '2025',
             'fund_manager_id' => $fundManager->id,
         ]);
 
