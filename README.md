@@ -47,6 +47,13 @@ docker exec -it laravel_app composer install
 docker exec -it laravel_app php artisan migrate --seed
 ```
 
+### 4️⃣ **Update Storage Permissions (ONLY FOR DEV ENV)**
+
+```sh
+docker exec -it laravel_app chmod -R 777 /var/www/html/storage
+docker exec -it laravel_app chmod -R 777 /var/www/html/bootstrap/cache
+```
+
 ### 5️⃣ **Clear Cache (Optional)**
 
 ```sh

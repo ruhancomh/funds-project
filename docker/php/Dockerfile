@@ -24,8 +24,6 @@ RUN echo "memory_limit=512M" > /usr/local/etc/php/conf.d/memory-limit.ini
 # Copy Laravel project files
 COPY . .
 
-RUN composer install --no-interaction --prefer-dist
-
 # Ensure correct permissions
 RUN chown -R www-data:www-data /var/www/html
 
@@ -33,4 +31,4 @@ RUN chown -R www-data:www-data /var/www/html
 EXPOSE 9000
 
 # Start the container and run Composer at runtime
-CMD ["php-fpm"]
+CMD ["sh", "-c", "composer install --no-interaction --prefer-dist && php-fpm"]
