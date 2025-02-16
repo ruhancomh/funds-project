@@ -1,7 +1,9 @@
 # Laravel Fund Management API
 
 ## 📌 Overview
+
 This project is a **Laravel API** for managing investment funds, including:
+
 - CRUD operations for **Funds** and **Fund Managers**.
 - **Aliases** for Funds.
 - Event-driven logging for **duplicate fund warnings**.
@@ -9,30 +11,44 @@ This project is a **Laravel API** for managing investment funds, including:
 
 ---
 
+## 📌 Requirements
+
+To run this project, you need:
+
+- **Docker & Docker Compose** (for containerized environment)
+- **Git** (to clone the repository)
+- **cURL or Postman** (for API testing)
+- **Composer** (to manage PHP dependencies)
+
 ## 🚀 Setup & Run the Project
 
 ### 1️⃣ **Clone the Repository**
+
 ```sh
 git clone https://github.com/ruhancomh/funds-project.git
 cd laravel-fund-management
 ```
 
 ### 2️⃣ **Start the Docker Containers**
+
 ```sh
 docker-compose up --build -d
 ```
 
 ### 3️⃣ **Install Dependencies**
+
 ```sh
 docker exec -it laravel_app composer install
 ```
 
 ### 4️⃣ **Run Migrations & Seed Database**
+
 ```sh
 docker exec -it laravel_app php artisan migrate --seed
 ```
 
 ### 5️⃣ **Clear Cache (Optional)**
+
 ```sh
 docker exec -it laravel_app php artisan optimize:clear
 ```
@@ -42,20 +58,32 @@ docker exec -it laravel_app php artisan optimize:clear
 ## 📌 API Endpoints
 
 ### 🟢 **1. Create a New Fund**
+
 **`POST /api/funds`**  
 Creates a new fund with an optional list of aliases.
 
-#### ✅ **Request Example**
-```json
-{
-    "name": "Tech Fund",
-    "start_year": 2024,
-    "fund_manager_id": 1,
-    "aliases": ["Tech Growth", "AI Fund"]
-}
+#### 🔹 **Request Parameters**
+
+| Parameter         | Type   | Required | Description                            |
+|-------------------|--------|----------|----------------------------------------|
+| `name`            | string | ✅ Yes    | Name of the fund                       |
+| `start_year`      | int    | ✅ Yes    | The year the fund was started          |
+| `fund_manager_id` | int    | ✅ Yes    | The fund manager's ID                  |
+| `aliases`         | array  | ❌ No     | List of alternative names for the fund |
+
+#### ✅ **Full cURL Request**
+
+```sh
+curl -X POST "http://localhost:8080/api/funds"      -H "Content-Type: application/json"      -d '{
+          "name": "Tech Fund",
+          "start_year": 2024,
+          "fund_manager_id": 1,
+          "aliases": ["Tech Growth", "AI Fund"]
+         }'
 ```
 
-#### 📤 **Response Example**
+#### 📤 **Corrected Response Example**
+
 ```json
 {
     "message": "Fund created successfully",
@@ -63,10 +91,22 @@ Creates a new fund with an optional list of aliases.
         "id": 10,
         "name": "Tech Fund",
         "start_year": 2024,
-        "fund_manager": { "id": 1, "name": "Wealth Management Ltd" },
+        "fund_manager": {
+            "id": 1,
+            "company": {
+                "id": 5,
+                "name": "Wealth Management Ltd"
+            }
+        },
         "aliases": [
-            { "id": 1, "alias": "Tech Growth" },
-            { "id": 2, "alias": "AI Fund" }
+            {
+                "id": 1,
+                "alias": "Tech Growth"
+            },
+            {
+                "id": 2,
+                "alias": "AI Fund"
+            }
         ]
     }
 }
@@ -75,19 +115,30 @@ Creates a new fund with an optional list of aliases.
 ---
 
 ### 🟡 **2. Update a Fund**
+
 **`PUT /api/funds/{id}`**  
 Updates fund details including its manager.
 
-#### ✅ **Request Example**
-```json
-{
-    "name": "Updated Tech Fund",
-    "start_year": 2025,
-    "fund_manager_id": 2
-}
+#### 🔹 **Request Parameters**
+
+| Parameter         | Type   | Required | Description              |
+|-------------------|--------|----------|--------------------------|
+| `name`            | string | ✅ Yes    | Updated name of the fund |
+| `start_year`      | int    | ✅ Yes    | Updated start year       |
+| `fund_manager_id` | int    | ✅ Yes    | Updated fund manager ID  |
+
+#### ✅ **Full cURL Request**
+
+```sh
+curl -X PUT "http://localhost:8080/api/funds/10"      -H "Content-Type: application/json"      -d '{
+          "name": "Updated Tech Fund",
+          "start_year": 2025,
+          "fund_manager_id": 2
+         }'
 ```
 
-#### 📤 **Response Example**
+#### 📤 **Corrected Response Example**
+
 ```json
 {
     "message": "Fund updated successfully",
@@ -95,7 +146,13 @@ Updates fund details including its manager.
         "id": 10,
         "name": "Updated Tech Fund",
         "start_year": 2025,
-        "fund_manager": { "id": 2, "name": "Alpha Capital" },
+        "fund_manager": {
+            "id": 2,
+            "company": {
+                "id": 6,
+                "name": "Alpha Capital"
+            }
+        },
         "aliases": []
     }
 }
@@ -104,24 +161,44 @@ Updates fund details including its manager.
 ---
 
 ### 🔵 **3. Get All Funds (With Filters)**
+
 **`GET /api/funds`**  
 Retrieves all funds, optionally filtered by **name, manager, or year**.
 
-#### ✅ **Request Example**
-```
-GET /api/funds?name=Tech&fund_manager=Wealth Management Ltd&year=2024
+#### 🔹 **Query Parameters**
+
+| Parameter      | Type   | Required | Description                         |
+|----------------|--------|----------|-------------------------------------|
+| `name`         | string | ❌ No     | Filter by fund name                 |
+| `fund_manager` | string | ❌ No     | Filter by fund manager company name |
+| `year`         | int    | ❌ No     | Filter by start year                |
+
+#### ✅ **Full cURL Request**
+
+```sh
+curl -X GET "http://localhost:8080/api/funds?name=Tech&fund_manager=Wealth%20Management%20Ltd&year=2024"      -H "Accept: application/json"
 ```
 
-#### 📤 **Response Example**
+#### 📤 **Corrected Response Example**
+
 ```json
 [
     {
         "id": 10,
         "name": "Tech Fund",
         "start_year": 2024,
-        "fund_manager": { "id": 1, "name": "Wealth Management Ltd" },
+        "fund_manager": {
+            "id": 1,
+            "company": {
+                "id": 5,
+                "name": "Wealth Management Ltd"
+            }
+        },
         "aliases": [
-            { "id": 1, "alias": "Tech Growth" }
+            {
+                "id": 1,
+                "alias": "Tech Growth"
+            }
         ]
     }
 ]
@@ -132,16 +209,19 @@ GET /api/funds?name=Tech&fund_manager=Wealth Management Ltd&year=2024
 ## 🔥 Logs & Debugging
 
 ### 📄 **View Laravel Logs**
+
 ```sh
 docker exec -it laravel_app tail -f storage/logs/laravel.log
 ```
 
 ### 🛠 **Check Running Docker Containers**
+
 ```sh
 docker ps
 ```
 
 ### 🛠 **Restart the Application**
+
 ```sh
 docker-compose restart
 ```
@@ -149,6 +229,7 @@ docker-compose restart
 ---
 
 ## 🚀 **Next Steps / Improvements**
+
 - Implement **pagination** for large fund lists.
 - Add **authentication & authorization** for API security.
 - Extend **event-driven logging** with email alerts.

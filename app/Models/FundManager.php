@@ -11,7 +11,7 @@ class FundManager extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'company_id'];
+    protected $fillable = ['company_id'];
 
     public function company(): BelongsTo
     {
