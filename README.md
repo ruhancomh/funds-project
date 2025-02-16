@@ -20,6 +20,13 @@ To run this project, you need:
 - **cURL or Postman** (for API testing)
 - **Composer** (to manage PHP dependencies)
 
+---
+
+## 📌 ER Diagram
+![ER Diagram](er_diagram.svg)
+
+---
+
 ## 🚀 Setup & Run the Project
 
 ### 1️⃣ **Clone the Repository**
@@ -47,7 +54,7 @@ docker exec -it laravel_app composer install
 docker exec -it laravel_app php artisan migrate:fresh --seed
 ```
 
-### 4️⃣ **Update Storage Permissions (ONLY FOR DEV ENV)**
+### 4️⃣ **Update Storage Permissions**
 
 ```sh
 docker exec -it laravel_app chmod -R 777 /var/www/html/storage
