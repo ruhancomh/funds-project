@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\FundManager;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,9 +14,9 @@ return new class extends Migration
     {
         Schema::create('funds', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->year('start_year');
-            $table->foreignId('fund_manager_id')->constrained()->onDelete('cascade');
+            $table->foreignIdFor(FundManager::class);
             $table->timestamps();
         });
     }

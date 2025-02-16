@@ -9,7 +9,7 @@ class FundController extends Controller
 {
     public function index(): JsonResponse
     {
-        $funds = Fund::with('fundManager')->get();
+        $funds = Fund::with(['fundManager', 'aliases'])->get();
         return response()->json($funds);
     }
 }
