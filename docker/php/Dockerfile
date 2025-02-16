@@ -26,7 +26,9 @@ COPY . .
 
 # Ensure correct permissions
 RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 777 /var/www/html/storage
+
+RUN mkdir -p /var/www/html/storage /var/www/html/storage/logs /var/www/html/bootstrap/cache && \
+    chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Expose PHP port
 EXPOSE 9000
